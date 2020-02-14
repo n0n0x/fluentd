@@ -61,6 +61,11 @@ module Fluent
           tags = { app: metric["app"], status_code: metric["status_code"], host: metric["host"] }
           data = [
             {
+              series: 'deis_router_request_url',
+              values: { value: metric["request_url"], status_code: metric["status_code"], domain: metric["request_domain"] },
+              tags: tags
+            },
+            {
               series: 'deis_router_request_time_ms',
               values: { value: metric["request_time"] },
               tags: tags
@@ -91,7 +96,9 @@ module Fluent
           metric = {}
           metric["app"] = split_message[1].strip
           metric["status_code"] = split_message[4].strip
+          metric["request_url"] = split_message[5].strip
           metric["bytes_sent"] = split_message[6].strip.to_f
+          metric["request_domain"] = split_message[11].strip
           metric["response_time"] = split_message[12].strip.to_f
           metric["request_time"] = split_message[13].strip.to_f
           metric["host"] = host
