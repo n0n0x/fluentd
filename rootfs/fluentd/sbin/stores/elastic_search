@@ -29,7 +29,7 @@ then
   ELASTICSEARCH_SCHEME=${ELASTICSEARCH_SCHEME:-http}
 
 cat << EOF >> $FLUENTD_CONF
-$([ -n "${ELASTICSEARCH_DEIS_ROUTER_LOGS_ONLY}" ] && echo -e "</match>\n<match kubernetes.var.log.containers.deis-router-**.log>\n")
+$([ -n "${ELASTICSEARCH_DEIS_ROUTER_LOGS_ONLY}" ] && echo -e "</match>\n<match kubernetes.var.log.containers.deis-router-**.log>\n@type copy\n")
 <store>
   @type elasticsearch
   host ${ELASTICSEARCH_HOST}
