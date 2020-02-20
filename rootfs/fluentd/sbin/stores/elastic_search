@@ -29,6 +29,7 @@ then
   ELASTICSEARCH_SCHEME=${ELASTICSEARCH_SCHEME:-http}
 
 cat << EOF >> $FLUENTD_CONF
+$([ -n "${ELASTICSEARCH_DEIS_ROUTER_LOGS_ONLY}" ] && echo -e "</match>\n<match kubernetes.var.log.containers.deis-router-**.log>\n")
 <store>
   @type elasticsearch
   host ${ELASTICSEARCH_HOST}
@@ -57,5 +58,6 @@ cat << EOF >> $FLUENTD_CONF
   max_retry_wait ${FLUENTD_MAX_RETRY_WAIT}
   num_threads ${FLUENTD_FLUSH_THREADS}
 </store>
+$([ -n "${LOG}" ] && echo "</match>")
 EOF
 fi
